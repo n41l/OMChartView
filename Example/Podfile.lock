@@ -1,0 +1,22 @@
+PODS:
+  - Nimble (3.2.0)
+  - OMChartView (0.1.0)
+  - Quick (0.9.2)
+
+DEPENDENCIES:
+  - Nimble (~> 3.0)
+  - OMChartView (from `../`)
+  - Quick (~> 0.8)
+
+EXTERNAL SOURCES:
+  OMChartView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
+  OMChartView: 50c488d422eb82ab3ebf2c9048cd9a0b6594caab
+  Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
+
+PODFILE CHECKSUM: dbe1f137d1b6d067837ab7600f52afb0aa2a403f
+
+COCOAPODS: 1.0.0

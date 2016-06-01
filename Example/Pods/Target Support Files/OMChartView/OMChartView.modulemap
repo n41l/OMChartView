@@ -1,0 +1,6 @@
+framework module OMChartView {
+  umbrella header "OMChartView-umbrella.h"
+
+  export *
+  module * { export * }
+}
