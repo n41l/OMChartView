@@ -16,6 +16,16 @@
 		135B6326D35C977854AA0C12B3F6CB7D /* DSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627E4E84747227302312F1E22D114789 /* DSL.swift */; };
 		13CC849FA70CADF802470B6A90DCDF79 /* AllPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AD566EC508F35AEBD09410C38B0113 /* AllPass.swift */; };
 		18CF9FF8C83B60D1F98B23495F7BD350 /* String+FileName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66CBE690E9186E686698A8A8A71C5355 /* String+FileName.swift */; };
+		1A284BC51CFFD3F800063005 /* OMCirclePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A284BC31CFFD18000063005 /* OMCirclePath.swift */; };
+		1A284BC71CFFEB4B00063005 /* OMLineLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A284BC61CFFEB4B00063005 /* OMLineLayer.swift */; };
+		1A284BC91CFFEB5B00063005 /* OMCircleLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A284BC81CFFEB5B00063005 /* OMCircleLayer.swift */; };
+		1A284BCB1D00018300063005 /* OMChartDefines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A284BCA1D00018300063005 /* OMChartDefines.swift */; };
+		1A284BD01D00020500063005 /* OMChartLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A284BCF1D00020500063005 /* OMChartLayer.swift */; };
+		1A284BD11D0002C500063005 /* OMChartPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A284BCC1D0001CF00063005 /* OMChartPath.swift */; };
+		1A284BD61D00725C00063005 /* OMChartInteractiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A284BD51D00725C00063005 /* OMChartInteractiveView.swift */; };
+		1A6B645C1CFED282005F96D9 /* OMDrawingMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6B64581CFEC881005F96D9 /* OMDrawingMethods.swift */; };
+		1A6B645D1CFED285005F96D9 /* OMChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6B645A1CFED27F005F96D9 /* OMChartView.swift */; };
+		1A6B645F1CFED49F005F96D9 /* OMLinePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6B645E1CFED49F005F96D9 /* OMLinePath.swift */; };
 		1ED8C77E9422C66BBF56E6C10D5826F0 /* NMBExceptionCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = D365431FBA3C40A9570E9266B44005D7 /* NMBExceptionCapture.m */; };
 		2020827241FC78BAB2578A75776BD389 /* NSString+QCKSelectorName.h in Headers */ = {isa = PBXBuildFile; fileRef = 91EB10846A1D5A8B9A3BA28C5457DF56 /* NSString+QCKSelectorName.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		23626BC4DDA1A2E90A155728F57802FF /* DSL.h in Headers */ = {isa = PBXBuildFile; fileRef = 9DC1174FD42CD6684C5DE79AC08B57C5 /* DSL.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -96,7 +106,6 @@
 		E9A500611CF699885DE8A6BAB4E6B392 /* BeEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9111139F990D8CA088F1437E67693E8D /* BeEmpty.swift */; };
 		EE65909FA30EB86BEAB33409015EE19D /* Quick-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 702D610886AA829A76EF79A25B88E1AC /* Quick-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EFF546ABCA567D746B972AD8A0DA01A3 /* QCKDSL.h in Headers */ = {isa = PBXBuildFile; fileRef = 7005B0ADF96C275382B45359AE1A0FDC /* QCKDSL.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F2DC9F761763EAB657D5018FD273C819 /* ReplaceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2227BD951C71829B3E607FB4D08734BE /* ReplaceMe.swift */; };
 		F2E81623464A6CA3BBED8B799DEFF632 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAC405455F8E20BD0434D9D3E3D2879A /* Foundation.framework */; };
 		F3CB819C5DEF25D59F6AC4330C28CFF9 /* World+DSL.h in Headers */ = {isa = PBXBuildFile; fileRef = DE3C8A356B44398ECE2F664B378A6443 /* World+DSL.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		F3FB396F7B4759036346FD07188B4354 /* QuickSelectedTestSuiteBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03925EC2DD9F80DCD0C2E5301B52DC9C /* QuickSelectedTestSuiteBuilder.swift */; };
@@ -143,11 +152,20 @@
 		14E54518359461F114E8D46E7E2320F1 /* Pods-OMChartView_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-OMChartView_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		17C67F354773CA6E6C24403A918B3F23 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		18D110A87EF135293B27C04BD720A8E8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A284BC31CFFD18000063005 /* OMCirclePath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCirclePath.swift; sourceTree = "<group>"; };
+		1A284BC61CFFEB4B00063005 /* OMLineLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLineLayer.swift; sourceTree = "<group>"; };
+		1A284BC81CFFEB5B00063005 /* OMCircleLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMCircleLayer.swift; sourceTree = "<group>"; };
+		1A284BCA1D00018300063005 /* OMChartDefines.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMChartDefines.swift; sourceTree = "<group>"; };
+		1A284BCC1D0001CF00063005 /* OMChartPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMChartPath.swift; sourceTree = "<group>"; };
+		1A284BCF1D00020500063005 /* OMChartLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMChartLayer.swift; sourceTree = "<group>"; };
+		1A284BD51D00725C00063005 /* OMChartInteractiveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMChartInteractiveView.swift; sourceTree = "<group>"; };
+		1A6B64581CFEC881005F96D9 /* OMDrawingMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMDrawingMethods.swift; sourceTree = "<group>"; };
+		1A6B645A1CFED27F005F96D9 /* OMChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMChartView.swift; sourceTree = "<group>"; };
+		1A6B645E1CFED49F005F96D9 /* OMLinePath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMLinePath.swift; sourceTree = "<group>"; };
 		1C369DE47B8FBDDF56994EF084D14F12 /* HooksPhase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HooksPhase.swift; path = Sources/Quick/Hooks/HooksPhase.swift; sourceTree = "<group>"; };
 		1E312107D40F289E51948E81335FEB03 /* OMChartView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = OMChartView.modulemap; sourceTree = "<group>"; };
 		203A5C5D36EAB5C74A7CA2C7F3E57854 /* BeginWith.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeginWith.swift; path = Sources/Nimble/Matchers/BeginWith.swift; sourceTree = "<group>"; };
 		21804AD93726864D487659D2AD2EEE50 /* Pods-OMChartView_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-OMChartView_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		2227BD951C71829B3E607FB4D08734BE /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReplaceMe.swift; sourceTree = "<group>"; };
 		22BF65FFEC8A084057E63EDF139D2BD1 /* PostNotification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PostNotification.swift; path = Sources/Nimble/Matchers/PostNotification.swift; sourceTree = "<group>"; };
 		23D3F787478B2953573939A0E8511140 /* Nimble-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Nimble-prefix.pch"; sourceTree = "<group>"; };
 		299FCFFDCC88E9151397B8D50F79E36E /* World+DSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "World+DSL.swift"; path = "Sources/Quick/DSL/World+DSL.swift"; sourceTree = "<group>"; };
@@ -309,6 +327,26 @@
 				26123F29737B8F08D79DF3194BEFFAC0 /* OMChartView */,
 			);
 			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		1A284BCE1D0001EA00063005 /* OMChartPath */ = {
+			isa = PBXGroup;
+			children = (
+				1A284BCC1D0001CF00063005 /* OMChartPath.swift */,
+				1A6B645E1CFED49F005F96D9 /* OMLinePath.swift */,
+				1A284BC31CFFD18000063005 /* OMCirclePath.swift */,
+			);
+			name = OMChartPath;
+			sourceTree = "<group>";
+		};
+		1A284BD41D006FE800063005 /* OMChartLayer */ = {
+			isa = PBXGroup;
+			children = (
+				1A284BCF1D00020500063005 /* OMChartLayer.swift */,
+				1A284BC61CFFEB4B00063005 /* OMLineLayer.swift */,
+				1A284BC81CFFEB5B00063005 /* OMCircleLayer.swift */,
+			);
+			name = OMChartLayer;
 			sourceTree = "<group>";
 		};
 		26123F29737B8F08D79DF3194BEFFAC0 /* OMChartView */ = {
@@ -515,7 +553,12 @@
 		D6E198679C1C0474E3148BE69831315A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2227BD951C71829B3E607FB4D08734BE /* ReplaceMe.swift */,
+				1A6B645A1CFED27F005F96D9 /* OMChartView.swift */,
+				1A284BD51D00725C00063005 /* OMChartInteractiveView.swift */,
+				1A284BD41D006FE800063005 /* OMChartLayer */,
+				1A284BCE1D0001EA00063005 /* OMChartPath */,
+				1A284BCA1D00018300063005 /* OMChartDefines.swift */,
+				1A6B64581CFEC881005F96D9 /* OMDrawingMethods.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -849,8 +892,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A6B645F1CFED49F005F96D9 /* OMLinePath.swift in Sources */,
 				C12D7B746606C9AFDD8ABDD72E7688A1 /* OMChartView-dummy.m in Sources */,
-				F2DC9F761763EAB657D5018FD273C819 /* ReplaceMe.swift in Sources */,
+				1A284BD61D00725C00063005 /* OMChartInteractiveView.swift in Sources */,
+				1A284BD01D00020500063005 /* OMChartLayer.swift in Sources */,
+				1A6B645C1CFED282005F96D9 /* OMDrawingMethods.swift in Sources */,
+				1A284BCB1D00018300063005 /* OMChartDefines.swift in Sources */,
+				1A284BC51CFFD3F800063005 /* OMCirclePath.swift in Sources */,
+				1A6B645D1CFED285005F96D9 /* OMChartView.swift in Sources */,
+				1A284BD11D0002C500063005 /* OMChartPath.swift in Sources */,
+				1A284BC91CFFEB5B00063005 /* OMCircleLayer.swift in Sources */,
+				1A284BC71CFFEB4B00063005 /* OMLineLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

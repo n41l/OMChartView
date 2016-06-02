@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import OMChartView
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        let chartView = OMChartView(frame: CGRect(x: 0, y: 40, width: self.view.bounds.width, height: 200), withStatisticData: [10, 2, 5, 6, 7, 1, 12, 4, 2,])
+        chartView.backgroundColor = UIColor.blueColor()
+        self.view.addSubview(chartView)
+        
     }
 
     override func didReceiveMemoryWarning() {
