@@ -17,9 +17,9 @@ class OMCircleLayer: OMChartLayer {
         return self
     }
     
-    override func refineLayer(withRect: CGRect) -> OMChartLayer {
+    override func refineLayer(withRect: CGRect, _ andRectInset: UIEdgeInsets) -> OMChartLayer {
         if path == nil { path = OMCirclePath(chartStatisticData, circleRadius) }
-        super.refineLayer(withRect)
+        super.refineLayer(withRect, andRectInset)
         return self
     }
     

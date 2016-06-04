@@ -28,9 +28,11 @@ public class OMChartLayer: CALayer {
         super.init(coder: aDecoder)
     }
     
-    func refineLayer(withRect: CGRect) -> OMChartLayer {
-        path?.rSize = withRect.size * CGPoint(x: 1, y: yCoordinateScale)
-        self.frame = CGRect(origin: withRect.origin + CGPoint(x: 0, y: withRect.height * (1 - yCoordinateScale)), size: withRect.size * CGPoint(x: 1, y: yCoordinateScale))
+    func refineLayer(withRect: CGRect, _ andRectInset: UIEdgeInsets) -> OMChartLayer {
+        let insetedRect = UIEdgeInsetsInsetRect(withRect, andRectInset)
+        let tempRect = CGRect(x: andRectInset.left, y: andRectInset.top, width: insetedRect.width, height: insetedRect.height)
+        path?.rSize = tempRect.size * CGPoint(x: 1, y: yCoordinateScale)
+        self.frame = CGRect(origin: tempRect.origin + CGPoint(x: 0, y: tempRect.height * (1 - yCoordinateScale)), size: tempRect.size * CGPoint(x: 1, y: yCoordinateScale))
         return self
     }
     

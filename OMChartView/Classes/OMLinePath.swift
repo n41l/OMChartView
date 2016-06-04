@@ -30,7 +30,7 @@ class OMLinePath: OMChartPath {
     
     override func closedPath() -> CGPath {
         let path = CGPathCreateMutableCopy(_path ?? self.path())
-        CGPathAddLineToPoint(path, nil, CGPathGetCurrentPoint(path).x, rSize.height - nadir + 10)
+        CGPathAddLineToPoint(path, nil, CGPathGetCurrentPoint(path).x, rSize.height + bottomExpand)
         CGPathAddLineToPoint(path, nil, 0, CGPathGetCurrentPoint(path).y)
         CGPathCloseSubpath(path)
         return path!

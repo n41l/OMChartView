@@ -15,6 +15,7 @@ class OMChartPath {
     var flipPointsPositon: [CGPoint] = []
     var realPointsPositon: [CGPoint] = []
     var allBezierParameters: [BezierParameters] = []
+    var bottomExpand: CGFloat = 0
 
     
     var _path: CGMutablePath?

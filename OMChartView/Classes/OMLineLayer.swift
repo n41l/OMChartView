@@ -20,9 +20,10 @@ public class OMLineLayer: OMChartLayer {
         return self
     }
     
-    override func refineLayer(withRect: CGRect) -> OMChartLayer {
+    override func refineLayer(withRect: CGRect, _ andRectInset: UIEdgeInsets) -> OMChartLayer {
         if path == nil { path = OMLinePath(chartStatisticData) }
-        super.refineLayer(withRect)
+        path?.bottomExpand = andRectInset.bottom
+        super.refineLayer(withRect, andRectInset)
         return self
     }
     
