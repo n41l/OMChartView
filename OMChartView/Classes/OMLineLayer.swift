@@ -8,29 +8,37 @@
 
 import UIKit
 
-class OMLineLayer: OMChartLayer {
+public class OMLineLayer: OMChartLayer {
     
-    var solid: Bool = false
+    private var solid: Bool = false
     
     private var lineLayer: CAShapeLayer!
     private var contentLayer: CAShapeLayer?
     
-    func isSolid(flag: Bool) -> OMChartLayer{
-        self.solid = flag
+    public func isSolid(flag: Bool) -> OMChartLayer{
+        solid = flag
         return self
     }
     
-    override func draw() -> OMChartLayer {
-        path = OMLinePath(path.data, path.rSize)
-        drawContentLayer()
-        drawLineLayer()
+    override func refineLayer(withRect: CGRect) -> OMChartLayer {
+        if path == nil { path = OMLinePath(chartStatisticData) }
+        super.refineLayer(withRect)
+        return self
+    }
+    
+    public override func draw() -> OMChartLayer {
+        if solid {
+            drawContentLayer()
+        }else {
+            drawLineLayer()
+        }
         return self
     }
     
     private func drawLineLayer() {
         lineLayer = CAShapeLayer()
         lineLayer.frame = self.bounds
-        lineLayer.path = path.path()
+        lineLayer.path = path!.path()
         lineLayer.strokeColor = strokeColor.CGColor
         lineLayer.lineWidth = lineWidth
         lineLayer.lineCap = lineCap.rawValue
@@ -43,7 +51,7 @@ class OMLineLayer: OMChartLayer {
         guard solid else { return }
         contentLayer = CAShapeLayer()
         contentLayer?.frame = self.bounds
-        contentLayer?.path = path.closedPath()
+        contentLayer?.path = path!.closedPath()
         contentLayer?.fillColor = fillColor.CGColor
         contentLayer?.backgroundColor = UIColor.clearColor().CGColor
         self.addSublayer(contentLayer!)

@@ -12,9 +12,9 @@ class OMCirclePath: OMChartPath {
     var radius: CGFloat
     
     private var lastPoint: CGPoint?
-    init(_ withChartStatisticData: ChartStatisticData, _ andReferenceSize: CGSize, andRadius: CGFloat) {
+    init(_ withChartStatisticData: ChartStatisticData, _ andRadius: CGFloat) {
         radius = andRadius
-        super.init(withChartStatisticData, andReferenceSize)
+        super.init(withChartStatisticData)
     }
     
     override func path() -> CGPath {

@@ -25,7 +25,19 @@ func *(l: CGPoint, r: CGFloat) -> CGPoint {
     return CGPoint(x: l.x * r, y: l.y * r)
 }
 
+func *(l: CGPoint, r: CGPoint) -> CGPoint {
+    return CGPoint(x: l.x * r.x, y: l.y * r.y)
+}
+
 // size calculation
+
+func *(l: CGSize, r: CGFloat) -> CGSize {
+    return CGSize(width: l.width*r, height: l.height*r)
+}
+
+func *(l: CGSize, r: CGPoint) -> CGSize {
+    return CGSize(width: l.width * r.x, height: l.height * r.y)
+}
 
 func /(l: CGSize, r: CGFloat) -> CGSize {
     return CGSize(width: l.width/r, height: l.height/r)

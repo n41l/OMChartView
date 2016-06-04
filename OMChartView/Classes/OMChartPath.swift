@@ -10,7 +10,7 @@ import UIKit
 
 class OMChartPath {
     var data: ChartStatisticData
-    var rSize: CGSize
+    var rSize: CGSize = CGSizeZero
     
     var flipPointsPositon: [CGPoint] = []
     var realPointsPositon: [CGPoint] = []
@@ -19,9 +19,8 @@ class OMChartPath {
     
     var _path: CGMutablePath?
     
-    init(_ withChartStatisticData: ChartStatisticData, _ andReferenceSize: CGSize) {
+    init(_ withChartStatisticData: ChartStatisticData) {
         data = withChartStatisticData
-        rSize = andReferenceSize
     }
     
     func path() -> CGPath { return CGPathCreateMutable() }
@@ -32,6 +31,7 @@ class OMChartPath {
     
     func bezierParameters(xCoordinate: CGFloat) -> BezierParameters {
         guard allBezierParameters.count != 0 else { return (CGPointZero, CGPointZero, CGPointZero, CGPointZero) }
+        
         return allBezierParameters[Int(floor(xCoordinate / xFragment))]
     }
 }

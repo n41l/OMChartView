@@ -10,8 +10,16 @@ import UIKit
 
 class OMCircleLayer: OMChartLayer {
     
+    var circleRadius: CGFloat = 1
+    
     func withRadius(value: CGFloat) -> OMChartLayer {
-        path = OMCirclePath(path.data, path.rSize, andRadius: value)
+        circleRadius = value
+        return self
+    }
+    
+    override func refineLayer(withRect: CGRect) -> OMChartLayer {
+        if path == nil { path = OMCirclePath(chartStatisticData, circleRadius) }
+        super.refineLayer(withRect)
         return self
     }
     
@@ -21,8 +29,8 @@ class OMCircleLayer: OMChartLayer {
     }
     
     private func drawPoinst() {
-        let rpath = path.path()
-        for point in path.flipPointsPositon {
+        let rpath = path!.path()
+        for point in path!.flipPointsPositon {
             let pointLayer = CAShapeLayer()
             pointLayer.frame = CGPathGetPathBoundingBox(rpath)
             pointLayer.path = rpath

@@ -8,23 +8,31 @@
 
 import UIKit
 
-class OMChartLayer: CALayer {
-    var path: OMChartPath
-    var strokeColor: UIColor = UIColor(white: 0.66, alpha: 1)
-    var lineWidth: CGFloat = 1
-    var lineCap: OMChartLayerLineCap = .Round
-    var fillColor: UIColor = UIColor.redColor()
+public class OMChartLayer: CALayer {
+    var path: OMChartPath?
+    public var strokeColor: UIColor = UIColor(white: 0.66, alpha: 1)
+    public var lineWidth: CGFloat = 1
+    public var lineCap: OMChartLayerLineCap = .Round
+    public var fillColor: UIColor = UIColor.redColor()
+    public var yCoordinateScale: CGFloat = 1
     
-    init(_ withChartStatisticData: ChartStatisticData, _ andReferenceSize: CGSize) {
-        path = OMChartPath(withChartStatisticData, andReferenceSize)
+    var chartStatisticData: ChartStatisticData
+    public init(_ withChartStatisticData: ChartStatisticData, _ andYCoordinateScale: CGFloat) {
+        chartStatisticData = withChartStatisticData
+        yCoordinateScale = andYCoordinateScale
         super.init()
-        self.frame = CGRect(x: 0, y: 0, width: andReferenceSize.width, height: andReferenceSize.height)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        path = OMChartPath([], CGSizeZero)
+    public required init?(coder aDecoder: NSCoder) {
+        chartStatisticData = []
         super.init(coder: aDecoder)
     }
     
-    func draw() -> OMChartLayer { return self }
+    func refineLayer(withRect: CGRect) -> OMChartLayer {
+        path?.rSize = withRect.size * CGPoint(x: 1, y: yCoordinateScale)
+        self.frame = CGRect(origin: withRect.origin + CGPoint(x: 0, y: withRect.height * (1 - yCoordinateScale)), size: withRect.size * CGPoint(x: 1, y: yCoordinateScale))
+        return self
+    }
+    
+    public func draw() -> OMChartLayer { return self }
 }

@@ -8,76 +8,88 @@
 
 import UIKit
 
-class OMChartInteractiveView: UIView {
-    var panGestrue: UIPanGestureRecognizer
+public class OMChartInteractiveView: UIView {
+    var panGestrue: UIPanGestureRecognizer?
     var chartLayers: [OMChartLayer] = []
-    var indicatorLine: CALayer?
-//    var
+    var rectInset: UIEdgeInsets = UIEdgeInsetsZero
+//        {
+//        didSet {
+//            interactiveRect = UIEdgeInsetsInsetRect(interactiveRect, rectInset)
+//        }
+//    }
     
-    override init(frame: CGRect) {
-        panGestrue = UIPanGestureRecognizer()
+//    var interactiveRect: CGRect
+    
+    var isInteractive: Bool = false {
+        didSet {
+            if isInteractive {
+                panGestrue = UIPanGestureRecognizer(target: self, action: #selector(OMChartInteractiveView.handlePan(_:)))
+                self.addGestureRecognizer(panGestrue!)
+            }
+        }
+    }
+    
+    public override init(frame: CGRect) {
+//        interactiveRect = CGRect(origin: CGPointZero, size: frame.size)
         super.init(frame: frame)
-        panGestrue.addTarget(self, action: #selector(OMChartInteractiveView.handlePan(_:)))
-        self.addGestureRecognizer(panGestrue)
+        self.backgroundColor = UIColor.clearColor()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        panGestrue = UIPanGestureRecognizer()
+    public required init?(coder aDecoder: NSCoder) {
+//        interactiveRect = CGRectZero
         super.init(coder: aDecoder)
-        panGestrue.addTarget(self, action: #selector(OMChartInteractiveView.handlePan(_:)))
-        self.addGestureRecognizer(panGestrue)
+        self.backgroundColor = UIColor.clearColor()
     }
     
-    func appendLayers(layers: OMChartLayer...) {
-        for item in layers {
-            chartLayers.append(item)
+    func appendLayers(layers: [OMChartLayer]) {
+        chartLayers = layers
+    }
+    
+    public override func drawRect(rect: CGRect) {
+        for item in chartLayers {
+            self.layer.addSublayer(item)
         }
     }
     
     func handlePan(sender: UIPanGestureRecognizer) {
+        
+        let rRect = UIEdgeInsetsInsetRect(self.bounds, rectInset)
         switch sender.state {
         case .Began:
             let location = sender.locationInView(self)
-            indicatorLine = currentLineLayer(location)
-            self.layer.addSublayer(indicatorLine!)
-            
+            panBegan(location, currentOffsets(min(max(location.x - rectInset.left, 0), rRect.width - 1)))
         case .Changed:
             let location = sender.locationInView(self)
-                indicatorLine?.removeFromSuperlayer()
-                indicatorLine = nil
-                indicatorLine = currentLineLayer(location)
-                self.layer.addSublayer(indicatorLine!)
+            panChanged(location, currentOffsets(min(max(location.x - rectInset.left, 0), rRect.width - 1)))
+        case .Ended:
+            let location = sender.locationInView(self)
+            panEnded(location, currentOffsets(min(max(location.x - rectInset.left, 0), rRect.width - 1)))
         default:
             break
         }
     }
     
-    func currentLineLayer(atLocation: CGPoint) -> CALayer {
-        let x = atLocation.x
-        let offsets = chartLayers.map { (layer) -> CGPoint in
-            let t = (x % layer.path.xFragment) / layer.path.xFragment
-            let parameter = layer.path.bezierParameters(x)
-            return bezierFunction(parameter)(t: t) + CGPoint(x: 0, y: 100)
+    private func currentOffsets(x: CGFloat) -> [CGPoint] {
+        return chartLayers.map { (layer) -> CGPoint in
+            var t = x / layer.path!.xFragment
+            t = t - CGFloat(Int(t))
+            let orgin = layer.frame.origin
+            let parameter = layer.path!.bezierParameters(x)
+            return bezierFunction(parameter)(t: t) + CGPoint(x: orgin.x, y: orgin.y)
             }.sort { $0.y < $1.y }
+    }
+    
+    public func panBegan(location: CGPoint, _ currentOffsets: [CGPoint]) {
         
-        let path = CGPathCreateMutable()
-        CGPathAddEllipseInRect(path, nil, CGRect(x: 0, y: 0, width: 4, height: 4))
-//        for (index, y) in yOffsets.enumerate() {
-//            if index == 0 {
-//                CGPathMoveToPoint(path, nil, x, y)
-//            }else {
-//                CGPathAddLineToPoint(path, nil, x, y)
-//            }
-//        }
+    }
+    
+    public func panChanged(location: CGPoint, _ currentOffsets: [CGPoint]) {
         
-        let layer = CAShapeLayer()
-        layer.frame = CGPathGetPathBoundingBox(path)
-        layer.path = path
-        layer.strokeColor = UIColor.yellowColor().CGColor
-        layer.lineWidth = 4
-        layer.position = offsets.first!
+    }
+    
+    public func panEnded(location: CGPoint, _ currentOffsets: [CGPoint]) {
         
-        return layer
     }
     
 }
+
