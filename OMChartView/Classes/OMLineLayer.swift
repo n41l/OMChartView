@@ -11,19 +11,39 @@ import UIKit
 public class OMLineLayer: OMChartLayer {
     
     private var solid: Bool = false
+    private var gradientContent: Bool = false
     
     private var lineLayer: CAShapeLayer!
-    private var contentLayer: CAShapeLayer?
+    private var contentLayer: CALayer?
+    private var maskLayer: CAShapeLayer?
+    private var gradientContentSize: CGSize = CGSizeZero
     
     public func isSolid(flag: Bool) -> OMChartLayer{
         solid = flag
         return self
     }
     
+    public func withGradient(sp: CGPoint, ep: CGPoint, colors: [UIColor]) -> OMChartLayer {
+        solid = true
+        gradientContent = true
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.startPoint = sp
+        gradientLayer.endPoint = ep
+        gradientLayer.colors = colors.map { $0.CGColor }
+        
+        contentLayer = gradientLayer
+        
+        return self
+    }
+    
     override func refineLayer(withRect: CGRect, _ andRectInset: UIEdgeInsets) -> OMChartLayer {
         if path == nil { path = OMLinePath(chartStatisticData) }
         path?.bottomExpand = andRectInset.bottom
+
         super.refineLayer(withRect, andRectInset)
+        
+        if gradientContent { gradientContentSize = CGSize(width: self.bounds.width, height: self.bounds.height + andRectInset.bottom) }
         return self
     }
     
@@ -49,12 +69,24 @@ public class OMLineLayer: OMChartLayer {
     }
     
     private func drawContentLayer() {
-        guard solid else { return }
-        contentLayer = CAShapeLayer()
-        contentLayer?.frame = self.bounds
-        contentLayer?.path = path!.closedPath()
-        contentLayer?.fillColor = fillColor.CGColor
-        contentLayer?.backgroundColor = UIColor.clearColor().CGColor
+        
+        guard solid || gradientContent else { return }
+        
+        if solid && gradientContent {
+            contentLayer?.frame = CGRect(origin: CGPointZero, size: gradientContentSize)
+            maskLayer = CAShapeLayer()
+            maskLayer?.frame = self.bounds
+            maskLayer?.path = path!.closedPath()
+            contentLayer?.mask = maskLayer
+        }else {
+            let tempLayer = CAShapeLayer()
+            tempLayer.frame = self.bounds
+            tempLayer.path = path!.closedPath()
+            tempLayer.fillColor = fillColor.CGColor
+            tempLayer.backgroundColor = UIColor.clearColor().CGColor
+            contentLayer = tempLayer
+        }
+        
         self.addSublayer(contentLayer!)
         
     }
