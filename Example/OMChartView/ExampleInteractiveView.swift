@@ -12,6 +12,20 @@ import OMChartView
 class ExampleInteractiveView: OMChartInteractiveView {
     var indicatorLine: CALayer?
     var indicatorPoints: [CALayer] = []
+    var statisticPopover: OMSimplePopoverView = OMSimplePopoverView()
+    var popoverContentView: UIView?
+//    var currentSnapPositionIndex: Int = 0 {
+//        willSet {
+//            if newValue != currentSnapPositionIndex {
+//                guard let popoverContentView = popoverContentView else { return }
+//                statisticPopover.removeFromSuperview()
+//                print(newValue)
+////                print(snappingPositions)
+//                statisticPopover.setup(popoverContentView, self, snappingPositions[newValue])
+//                print(snappingPositions[newValue])
+//            }
+//        }
+//    }
     
     private lazy var indicatorImage: UIImage? = {
         return UIImage(named: "statistic_indicator_point")
@@ -24,6 +38,31 @@ class ExampleInteractiveView: OMChartInteractiveView {
     override func panChanged(location: CGPoint, _ currentOffsets: [CGPoint]) {
         currentIndicatroLineLayer(currentOffsets)
         currentIndicatorPointLayers(currentOffsets)
+        
+//        print(currentOffsets.last)
+//        let rPoint = currentOffsets.last!
+//        let delta = rPoint.x / xFragment
+//        
+//        let intBit = Int(delta)
+//        let decimalBit = delta - CGFloat(intBit)
+//        
+//        if decimalBit < 0.5 {
+//            currentSnapPositionIndex = intBit
+//        }else {
+//            currentSnapPositionIndex = intBit + 1
+//        }
+//
+//        if decimalBit < 0.2 {
+//            statisticPopover.showWithInterativeParameter(1 - (decimalBit / 0.2))
+//        }
+//        
+//        if decimalBit > 0.8 {
+//            currentSnapPositionIndex = intBit + 1
+//            statisticPopover.showWithInterativeParameter(1 - ((decimalBit - 0.8) / 0.2))
+//        }
+        
+        
+        
     }
     
     override func panEnded(location: CGPoint, _ currentOffsets: [CGPoint]) {
@@ -83,7 +122,7 @@ class ExampleInteractiveView: OMChartInteractiveView {
     }
     
     private func snapIndicator() {
-        
+//        snappingPositions
     }
     
 }

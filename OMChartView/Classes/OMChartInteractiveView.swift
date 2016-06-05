@@ -12,9 +12,28 @@ public class OMChartInteractiveView: UIView {
     var panGestrue: UIPanGestureRecognizer?
     var chartLayers: [OMChartLayer] = []
     var rectInset: UIEdgeInsets = UIEdgeInsetsZero
-    lazy var snappingPositions: [CGPoint] = {
+    public lazy var snappingPositions: [CGPoint] = {
         guard self.chartLayers.count != 0 else { fatalError("use this property after appending layers") }
-        return self.chartLayers.first!.path!.realPointsPositon
+        return self.chartLayers.map { (layer) -> [CGPoint] in
+            layer.path!.flipPointsPosition
+        }.reduce([CGPoint]()) { (initial, points) -> [CGPoint] in
+            if initial.count == 0 {
+                return points
+            }else {
+                return (0..<initial.count).map { (index) -> CGPoint in
+                    if initial[index].y < points[index].y {
+                        return points[index]
+                    }else {
+                        return initial[index]
+                    }
+                }
+            }
+        }
+    }()
+    
+    public lazy var xFragment: CGFloat = {
+        guard self.chartLayers.count != 0 else { fatalError("use this property after appending layers") }
+        return self.chartLayers.first!.path!.xFragment
     }()
     
     var isInteractive: Bool = false {
@@ -30,6 +49,9 @@ public class OMChartInteractiveView: UIView {
 //        interactiveRect = CGRect(origin: CGPointZero, size: frame.size)
         super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
+        
+        
+        
     }
     
     public required init?(coder aDecoder: NSCoder) {

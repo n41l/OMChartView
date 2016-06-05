@@ -30,7 +30,7 @@ class OMCircleLayer: OMChartLayer {
     
     private func drawPoinst() {
         let rpath = path!.path()
-        for point in path!.flipPointsPositon {
+        for point in path!.flipPointsPosition {
             let pointLayer = CAShapeLayer()
             pointLayer.frame = CGPathGetPathBoundingBox(rpath)
             pointLayer.path = rpath

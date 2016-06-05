@@ -12,8 +12,8 @@ class OMChartPath {
     var data: ChartStatisticData
     var rSize: CGSize = CGSizeZero
     
-    var flipPointsPositon: [CGPoint] = []
-    var realPointsPositon: [CGPoint] = []
+    var flipPointsPosition: [CGPoint] = []
+    var realPointsPosition: [CGPoint] = []
     var allBezierParameters: [BezierParameters] = []
     var bottomExpand: CGFloat = 0
 
@@ -33,7 +33,13 @@ class OMChartPath {
     func bezierParameters(xCoordinate: CGFloat) -> BezierParameters {
         guard allBezierParameters.count != 0 else { return (CGPointZero, CGPointZero, CGPointZero, CGPointZero) }
         
-        return allBezierParameters[Int(floor(xCoordinate / xFragment))]
+        var index = Int(xCoordinate / xFragment)
+        
+        if xCoordinate == rSize.width {
+            index -= 1
+        }
+        
+        return allBezierParameters[index]
     }
 }
 

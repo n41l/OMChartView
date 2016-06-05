@@ -21,9 +21,9 @@ class OMCirclePath: OMChartPath {
         let rRect = CGRect(x: 0, y: 0, width: radius, height: radius)
         for (index, item) in data.enumerate() {
             var tempPoint = CGPoint(x: CGFloat(index) * xFragment, y: refinedData(item) * yRatio)
-            realPointsPositon.append(tempPoint)
+            realPointsPosition.append(tempPoint)
             tempPoint.y = rSize.height - tempPoint.y
-            flipPointsPositon.append(tempPoint)
+            flipPointsPosition.append(tempPoint)
             guard let lastPoint = lastPoint else { continue }
             let center = centerOfTwoPoints(lastPoint, tempPoint)
             let cp1 = CGPoint(x: center.x, y: lastPoint.y)

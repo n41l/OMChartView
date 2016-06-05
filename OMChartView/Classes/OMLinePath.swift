@@ -15,7 +15,7 @@ class OMLinePath: OMChartPath {
         _path = CGPathCreateMutable()
         for (index, item) in data.enumerate() {
             var tempPoint = CGPoint(x: CGFloat(index) * xFragment, y: refinedData(item) * yRatio)
-            realPointsPositon.append(tempPoint)
+            realPointsPosition.append(tempPoint)
             
             tempPoint.y = rSize.height - tempPoint.y
             if index == 0 {
@@ -23,7 +23,7 @@ class OMLinePath: OMChartPath {
             }else {
                 addHorizontalCurveToPointWithoutCTM(tempPoint)
             }
-            flipPointsPositon.append(tempPoint)
+            flipPointsPosition.append(tempPoint)
         }
         return _path!
     }
