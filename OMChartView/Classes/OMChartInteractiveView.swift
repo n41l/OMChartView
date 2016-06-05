@@ -12,13 +12,10 @@ public class OMChartInteractiveView: UIView {
     var panGestrue: UIPanGestureRecognizer?
     var chartLayers: [OMChartLayer] = []
     var rectInset: UIEdgeInsets = UIEdgeInsetsZero
-//        {
-//        didSet {
-//            interactiveRect = UIEdgeInsetsInsetRect(interactiveRect, rectInset)
-//        }
-//    }
-    
-//    var interactiveRect: CGRect
+    lazy var snappingPositions: [CGPoint] = {
+        guard self.chartLayers.count != 0 else { fatalError("use this property after appending layers") }
+        return self.chartLayers.first!.path!.realPointsPositon
+    }()
     
     var isInteractive: Bool = false {
         didSet {

@@ -18,36 +18,29 @@ class ExampleInteractiveView: OMChartInteractiveView {
     }()
     
     override func panBegan(location: CGPoint, _ currentOffsets: [CGPoint]) {
-        currentIndicatorPointLayers(currentOffsets)
+//        currentIndicatorPointLayers(currentOffsets)
     }
     
     override func panChanged(location: CGPoint, _ currentOffsets: [CGPoint]) {
-        indicatorLine?.removeFromSuperlayer()
-        indicatorLine = nil
-        
-        indicatorLine = currentIndicatroLineLayer(currentOffsets)
-        self.layer.addSublayer(indicatorLine!)
-        
-        for point in indicatorPoints {
-            point.removeFromSuperlayer()
-        }
-        indicatorPoints.removeAll()
+        currentIndicatroLineLayer(currentOffsets)
         currentIndicatorPointLayers(currentOffsets)
-        
     }
     
     override func panEnded(location: CGPoint, _ currentOffsets: [CGPoint]) {
-        indicatorLine?.removeFromSuperlayer()
-        indicatorLine = nil
-        
-        for point in indicatorPoints {
-            point.removeFromSuperlayer()
-        }
-        indicatorPoints.removeAll()
+//        indicatorLine?.removeFromSuperlayer()
+//        indicatorLine = nil
+//        
+//        for point in indicatorPoints {
+//            point.removeFromSuperlayer()
+//        }
+//        indicatorPoints.removeAll()
     }
     
     
-    private func currentIndicatroLineLayer(withCurrentOffsets: [CGPoint]) -> CALayer {
+    private func currentIndicatroLineLayer(withCurrentOffsets: [CGPoint]) {
+        
+        indicatorLine?.removeFromSuperlayer()
+        indicatorLine = nil
 
         let path = CGPathCreateMutable()
         
@@ -64,28 +57,20 @@ class ExampleInteractiveView: OMChartInteractiveView {
         layer.strokeColor = UIColor(white: 1, alpha: 0.58).CGColor
         layer.lineWidth = 2
         
-        return layer
+        indicatorLine = layer
+        
+        self.layer.addSublayer(indicatorLine!)
+        
     }
     
     private func currentIndicatorPointLayers(withCurrentOffsets: [CGPoint]) {
-//        dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)) { 
-//            UIGraphicsBeginImageContext(CGSize(width: 20, height: 20))
-//            UIImage(named: "statistic_indicator_point")?.drawInRect(CGRect(origin: CGPointZero, size: CGSize(width: 20, height: 20)))
-//            let image = UIGraphicsGetImageFromCurrentImageContext()
-//            
-//            dispatch_async(dispatch_get_main_queue(), { 
-//                for item in withCurrentOffsets {
-//                    let layer = CALayer()
-//                    layer.frame = CGRect(origin: CGPointZero, size: image.size)
-//                    layer.position = item
-//                    layer.contents = image.CGImage
-//                    self.indicatorPoints.append(layer)
-//                    self.layer.addSublayer(layer)
-//                }
-//            })
-//        }
         
         guard let image = indicatorImage else { return }
+        
+        for point in indicatorPoints {
+            point.removeFromSuperlayer()
+        }
+        indicatorPoints.removeAll()
         
         for item in withCurrentOffsets {
             let layer = CALayer()
@@ -95,6 +80,10 @@ class ExampleInteractiveView: OMChartInteractiveView {
             self.indicatorPoints.append(layer)
             self.layer.addSublayer(layer)
         }
+    }
+    
+    private func snapIndicator() {
+        
     }
     
 }
