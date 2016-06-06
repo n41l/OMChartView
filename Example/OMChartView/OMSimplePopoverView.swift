@@ -17,12 +17,15 @@ class OMSimplePopoverView: UIView {
     var direction: OMSimplePopoverDirection = .Up
     var isInteractive: Bool = true
     var cornerRadius: CGFloat = 5
-    var arrowSize: CGSize = CGSize(width: 10 * pow(3, 0.5), height: 15)
+    var arrowSize: CGSize = CGSize(width: 12, height: 8)
+    var bgColor: UIColor = UIColor.whiteColor()
     
     private var _arrowPosition: CGPoint = CGPointZero
     private var _fromView: UIView!
     private var _contentView: UIView!
     private var _contentLayer: CALayer?
+    private var _popoverLayer: CALayer!
+    private var _firstDraw: Bool = true
     
     private var setupFinished: Bool = false
     
@@ -49,10 +52,10 @@ class OMSimplePopoverView: UIView {
         let popoverFill = CAShapeLayer()
         popoverFill.frame = popoverRect
         popoverFill.path = roundRectanglePath
-        popoverFill.fillColor = UIColor.redColor().CGColor
-        popoverFill.strokeColor = UIColor.redColor().CGColor
+        popoverFill.fillColor = bgColor.CGColor
+        popoverFill.strokeColor = bgColor.CGColor
         
-        self.layer.addSublayer(popoverFill)
+        _popoverLayer = popoverFill
         
         self.frame = popoverFill.bounds
         self.layer.anchorPoint = popoverAnchorPoint
@@ -65,7 +68,14 @@ class OMSimplePopoverView: UIView {
     
     func showWithAnimation() {
         guard setupFinished else { fatalError("setup your popover first") }
-        _fromView.addSubview(self)
+        
+        if _firstDraw {
+            self.layer.addSublayer(_popoverLayer)
+            self.addSubview(_contentView)
+            _fromView.addSubview(self)
+            _firstDraw = false
+        }
+        
         self.transform = CGAffineTransformMakeScale(0.3, 0.3)
         UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: .CurveEaseIn, animations: { 
             self.transform = CGAffineTransformIdentity
@@ -74,7 +84,12 @@ class OMSimplePopoverView: UIView {
     
     func showWithInterativeParameter(delta: CGFloat) {
         guard setupFinished else { fatalError("setup your popover first") }
-        _fromView.addSubview(self)
+        if _firstDraw {
+            self.layer.addSublayer(_popoverLayer)
+            self.addSubview(_contentView)
+            _fromView.addSubview(self)
+            _firstDraw = false
+        }
         
         self.transform = CGAffineTransformMakeScale(min(max(0, delta), 1), min(max(0, delta), 1))
 

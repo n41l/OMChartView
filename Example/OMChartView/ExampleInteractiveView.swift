@@ -14,6 +14,26 @@ class ExampleInteractiveView: OMChartInteractiveView {
     var indicatorPoints: [CALayer] = []
     var statisticPopover: OMSimplePopoverView = OMSimplePopoverView()
     var popoverContentView: UIView?
+    var canResponedToGesture: Bool = true
+    
+    var displayLink: CADisplayLink?
+    var addedX: CGFloat = 0
+    var remainingDistance: CGFloat = 0
+    var currentXOffset: CGFloat = 0
+    var displayLinkCount: Int = 12
+    
+    var popoverPosition: CGPoint = CGPointZero {
+        willSet {
+            if newValue != popoverPosition {
+                guard let popoverContentView = popoverContentView else { return }
+                statisticPopover.setup(popoverContentView, self, newValue)
+            }
+        }
+    }
+    
+    lazy var snappingPositionsWithOffset: [CGPoint] = {
+        return self.snappingPositions.map { CGPoint(x: $0.x, y: $0.y - 10) }
+    }()
 //    var currentSnapPositionIndex: Int = 0 {
 //        willSet {
 //            if newValue != currentSnapPositionIndex {
@@ -33,47 +53,107 @@ class ExampleInteractiveView: OMChartInteractiveView {
     
     override func panBegan(location: CGPoint, _ currentOffsets: [CGPoint]) {
 //        currentIndicatorPointLayers(currentOffsets)
+//        currentIndicatorPointLayers(snappingPositions)
+        guard canResponedToGesture else { return }
+
     }
     
     override func panChanged(location: CGPoint, _ currentOffsets: [CGPoint]) {
         currentIndicatroLineLayer(currentOffsets)
         currentIndicatorPointLayers(currentOffsets)
         
-//        print(currentOffsets.last)
-//        let rPoint = currentOffsets.last!
-//        let delta = rPoint.x / xFragment
-//        
-//        let intBit = Int(delta)
-//        let decimalBit = delta - CGFloat(intBit)
-//        
-//        if decimalBit < 0.5 {
-//            currentSnapPositionIndex = intBit
-//        }else {
-//            currentSnapPositionIndex = intBit + 1
-//        }
-//
-//        if decimalBit < 0.2 {
-//            statisticPopover.showWithInterativeParameter(1 - (decimalBit / 0.2))
-//        }
-//        
-//        if decimalBit > 0.8 {
-//            currentSnapPositionIndex = intBit + 1
-//            statisticPopover.showWithInterativeParameter(1 - ((decimalBit - 0.8) / 0.2))
+        
+        guard canResponedToGesture else { return }
+        let index = Int(round(location.x / xFragment))
+//        let decimal = location.x / xFragment - CGFloat(index)
+        
+//        if decimal > 0.3 && decimal < 0.7 { return }
+        
+//        if decimal > 0.7 {
+//            index += 1
 //        }
         
+        
+        
+        guard index != 0 else { return }
+        guard index != snappingPositionsWithOffset.count else { return }
+        
+        popoverPosition = snappingPositionsWithOffset[index - 1]
+        
+        let distance = abs(location.x - popoverPosition.x)
+        
+        if distance / xFragment > 0.4 {
+            canResponedToGesture = false
+            UIView.animateWithDuration(0.01, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: .CurveEaseIn, animations: {
+                self.statisticPopover.transform = CGAffineTransformMakeScale(0.1, 0.1)
+                self.statisticPopover.alpha = 0
+            }) { finished in
+//                self.statisticPopover.removeFromSuperview()
+                self.statisticPopover.transform = CGAffineTransformIdentity
+                self.statisticPopover.alpha = 0
+                self.canResponedToGesture = true
+            }
+            
+            return
+        }
+        
+        let delta = min(max(0, 1 - abs(location.x - popoverPosition.x)/(xFragment)), 1)
+        statisticPopover.alpha = delta
+        statisticPopover.showWithInterativeParameter(delta)
+    }
+    
+    override func panEnded(location: CGPoint, _ currentOffsets: [CGPoint]) {
+        guard canResponedToGesture else { return }
+        displayLink = CADisplayLink(target: self, selector: #selector(ExampleInteractiveView.drawNewIndicator(_: )))
+        displayLink?.addToRunLoop(NSRunLoop.currentRunLoop(), forMode: NSDefaultRunLoopMode)
+        addedX = 0
+        remainingDistance = 0
+        currentXOffset = 0
+        displayLinkCount = 12
+        
+        
+        let index = Int(round(location.x / xFragment))
+        
+        guard index != 0 else { return }
+        guard index != snappingPositionsWithOffset.count else { return }
+        
+        popoverPosition = snappingPositionsWithOffset[index - 1]
+        remainingDistance = location.x - popoverPosition.x
+        addedX = remainingDistance / 12
+        currentXOffset = location.x
+        
+        if statisticPopover.alpha != 0 {
+            canResponedToGesture = false
+            UIView.animateWithDuration(0.01, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: .CurveEaseInOut, animations: {
+                self.statisticPopover.transform = CGAffineTransformIdentity
+                self.statisticPopover.alpha = 1
+            }) { finished in
+                self.canResponedToGesture = true
+            }
+            
+            return
+        }
+        
+        statisticPopover.alpha = 1
+        statisticPopover.showWithAnimation()
         
         
     }
     
-    override func panEnded(location: CGPoint, _ currentOffsets: [CGPoint]) {
-//        indicatorLine?.removeFromSuperlayer()
-//        indicatorLine = nil
-//        
-//        for point in indicatorPoints {
-//            point.removeFromSuperlayer()
-//        }
-//        indicatorPoints.removeAll()
+    func drawNewIndicator(sender: CADisplayLink) {
+        guard remainingDistance != 0 else { return }
+        
+        currentIndicatroLineLayer(currentOffsets(currentXOffset))
+        currentIndicatorPointLayers(currentOffsets(currentXOffset))
+        currentXOffset -= addedX
+        displayLinkCount -= 1
+        
+        if displayLinkCount == 0 {
+            displayLink?.invalidate()
+            displayLink = nil
+        }
     }
+    
     
     
     private func currentIndicatroLineLayer(withCurrentOffsets: [CGPoint]) {
@@ -116,6 +196,7 @@ class ExampleInteractiveView: OMChartInteractiveView {
             layer.frame = CGRect(origin: CGPointZero, size: image.size)
             layer.position = item
             layer.contents = image.CGImage
+            layer.zPosition = 10
             self.indicatorPoints.append(layer)
             self.layer.addSublayer(layer)
         }

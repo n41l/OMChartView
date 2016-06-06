@@ -14,21 +14,22 @@ public class OMChartInteractiveView: UIView {
     var rectInset: UIEdgeInsets = UIEdgeInsetsZero
     public lazy var snappingPositions: [CGPoint] = {
         guard self.chartLayers.count != 0 else { fatalError("use this property after appending layers") }
-        return self.chartLayers.map { (layer) -> [CGPoint] in
-            layer.path!.flipPointsPosition
-        }.reduce([CGPoint]()) { (initial, points) -> [CGPoint] in
-            if initial.count == 0 {
-                return points
-            }else {
-                return (0..<initial.count).map { (index) -> CGPoint in
-                    if initial[index].y < points[index].y {
-                        return points[index]
-                    }else {
-                        return initial[index]
-                    }
-                }
-            }
-        }
+        return Array(self.chartLayers.first!.path!.flipPointsPosition.map { (point) -> CGPoint in
+            return self.currentOffsets(point.x).first!
+        }.dropFirst())
+//            .reduce([CGPoint]()) { (initial, points) -> [CGPoint] in
+//            if initial.count == 0 {
+//                return points
+//            }else {
+//                return (0..<initial.count).map { (index) -> CGPoint in
+//                    if initial[index].y < points[index].y {
+//                        return points[index]
+//                    }else {
+//                        return initial[index]
+//                    }
+//                }
+//            }
+//        }
     }()
     
     public lazy var xFragment: CGFloat = {
@@ -88,7 +89,7 @@ public class OMChartInteractiveView: UIView {
         }
     }
     
-    private func currentOffsets(x: CGFloat) -> [CGPoint] {
+    public func currentOffsets(x: CGFloat) -> [CGPoint] {
         return chartLayers.map { (layer) -> CGPoint in
             var t = x / layer.path!.xFragment
             t = t - CGFloat(Int(t))
