@@ -10,26 +10,18 @@ import UIKit
 import OMChartView
 
 class ViewController: UIViewController {
-
-    var testTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    var testPan: UIPanGestureRecognizer = UIPanGestureRecognizer()
-    var interactivePopover: OMSimplePopoverView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        testTap.addTarget(self, action: #selector(ViewController.handleTap(_:)))
-//        self.view.addGestureRecognizer(testTap)
-//        
-//        testPan.addTarget(self, action: #selector(ViewController.handlePan(_:)))
-//        self.view.addGestureRecognizer(testPan)
+        let characterCount: [CGFloat] = [18, 16, 25, 20, 28, 17, 23, 17, 20]
+        let gridCount: [CGFloat] = [5, 8, 6, 12, 5, 11, 8, 10, 7]
         
-        interactivePopover = OMSimplePopoverView()
-        let contentView = StatisticContentView(withGridCount: 7, 2800)
-//        interactivePopover.setup(contentView, self.view, CGPoint(x: self.view.bounds.width/2, y: self.view.bounds.height/2))
+        let contentView = StatisticContentView(withAllGridsAndCharacters: [gridCount, characterCount])
+        let delegates = ExampleInteractiveDelegateCenter(withDelegates: contentView)
         
-        let line1 = OMLineLayer([18, 16, 25, 20, 28, 17, 23, 17, 20], 1).withGradient(CGPoint(x: 0.5, y: 0.1), ep: CGPoint(x: 0.5, y: 0.95), colors: [UIColor(white: 1, alpha: 0.5), UIColor(white: 1, alpha: 0)])
-        let line2 = OMLineLayer([5, 8, 6, 12, 5, 11, 8, 10, 7], 0.5)
+        let line1 = OMLineLayer(characterCount, 1).withGradient(CGPoint(x: 0.5, y: 0.1), ep: CGPoint(x: 0.5, y: 0.95), colors: [UIColor(white: 1, alpha: 0.5), UIColor(white: 1, alpha: 0)])
+        let line2 = OMLineLayer(gridCount, 0.5)
         line2.strokeColor = UIColor(white: 1, alpha: 0.4)
         line2.lineWidth = 2
         
@@ -44,7 +36,8 @@ class ViewController: UIViewController {
     
         chartView.rectInset = UIEdgeInsetsMake(140, 0, 40, 0)
         let interactiveView = ExampleInteractiveView(frame: chartView.bounds)
-        interactiveView.popoverContentView = contentView
+        interactiveView.delegate = delegates
+        interactiveView.statisticPopover.setup(contentView, interactiveView, CGPointZero)
         chartView.withInteractiveView(interactiveView)
         chartView.commit()
         self.view.addSubview(chartView)
@@ -66,7 +59,7 @@ class ViewController: UIViewController {
     
     func handlePan(sender: UIPanGestureRecognizer) {
         let delta = sender.locationInView(self.view).x / self.view.bounds.width
-        interactivePopover.showWithInterativeParameter(delta)
+//        interactivePopover.showWithInterativeParameter(delta)
     }
 
 }

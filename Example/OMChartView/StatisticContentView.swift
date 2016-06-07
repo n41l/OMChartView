@@ -15,11 +15,26 @@ class StatisticContentView: UIView {
     let characterCount: UILabel = UILabel()
     let characterTitle: UILabel = UILabel()
     
+    var allGridsAndCharacters: [[CGFloat]] = []
+    
+    var currentIndex: Int {        
+        didSet {
+            if currentIndex != oldValue {
+                redraw()
+            }
+        }
+    }
+    
     var allLabels: [UILabel]
     
-    init(withGridCount: Int, _ andCharacterCount: Int) {
-        gridCount.text = String(withGridCount)
-        characterCount.text = String(andCharacterCount)
+    init(withAllGridsAndCharacters: [[CGFloat]]) {
+        
+        allGridsAndCharacters = withAllGridsAndCharacters
+        currentIndex = Int(allGridsAndCharacters.count / 2)
+        
+        
+        gridCount.text = String(allGridsAndCharacters.first![currentIndex])
+        characterCount.text = String(allGridsAndCharacters.last![currentIndex])
         
         gridTitle.text = "Grids"
         characterTitle.text = "Characters"
@@ -34,6 +49,7 @@ class StatisticContentView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         allLabels = [gridCount, characterCount, gridTitle, characterTitle]
+        currentIndex = 0
         super.init(coder: aDecoder)
     }
     
@@ -71,5 +87,19 @@ class StatisticContentView: UIView {
             self.addSubview(label)
         }
     }
+    
+    private func redraw() {
+        gridCount.text = String(Int(allGridsAndCharacters.first![currentIndex]))
+        characterCount.text = String(Int(allGridsAndCharacters.last![currentIndex]))
+        
+        gridCount.sizeToFit()
+        characterCount.sizeToFit()
+    }
 
+}
+
+extension StatisticContentView: ExampleInteractiveViewDelegate {
+    func exmapleInteractiveView(view: ExampleInteractiveView, didChangeSelectedIndex index: Int) {
+        currentIndex = index + 1
+    }
 }

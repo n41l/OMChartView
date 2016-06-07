@@ -9,24 +9,30 @@
 import UIKit
 import OMChartView
 
+protocol ExampleInteractiveViewDelegate {
+    func exmapleInteractiveView(view: ExampleInteractiveView, didChangeSelectedIndex index: Int)
+}
+
 class ExampleInteractiveView: OMChartInteractiveView {
     var indicatorLine: CALayer?
     var indicatorPoints: [CALayer] = []
     var statisticPopover: OMSimplePopoverView = OMSimplePopoverView()
-    var popoverContentView: UIView?
     var canResponedToGesture: Bool = true
     
     var displayLink: CADisplayLink?
     var addedX: CGFloat = 0
     var remainingDistance: CGFloat = 0
     var currentXOffset: CGFloat = 0
-    var displayLinkCount: Int = 12
+    
+    var delegate: ExampleInteractiveViewDelegate?
     
     var popoverPosition: CGPoint = CGPointZero {
         willSet {
+            self.statisticPopover.transform = CGAffineTransformIdentity
+            
             if newValue != popoverPosition {
-                guard let popoverContentView = popoverContentView else { return }
-                statisticPopover.setup(popoverContentView, self, newValue)
+//                guard let popoverContentView = popoverContentView else { return }
+                statisticPopover.setup(newValue)
             }
         }
     }
@@ -34,66 +40,75 @@ class ExampleInteractiveView: OMChartInteractiveView {
     lazy var snappingPositionsWithOffset: [CGPoint] = {
         return self.snappingPositions.map { CGPoint(x: $0.x, y: $0.y - 10) }
     }()
-//    var currentSnapPositionIndex: Int = 0 {
-//        willSet {
-//            if newValue != currentSnapPositionIndex {
-//                guard let popoverContentView = popoverContentView else { return }
-//                statisticPopover.removeFromSuperview()
-//                print(newValue)
-////                print(snappingPositions)
-//                statisticPopover.setup(popoverContentView, self, snappingPositions[newValue])
-//                print(snappingPositions[newValue])
-//            }
-//        }
-//    }
     
     private lazy var indicatorImage: UIImage? = {
         return UIImage(named: "statistic_indicator_point")
     }()
     
-    override func panBegan(location: CGPoint, _ currentOffsets: [CGPoint]) {
-//        currentIndicatorPointLayers(currentOffsets)
-//        currentIndicatorPointLayers(snappingPositions)
-        guard canResponedToGesture else { return }
+    override func tap(withLocation: CGPoint, _ count: Int) {
+        
+        if abs(withLocation.x - popoverPosition.x) < xFragment * 0.5 { return }
+        
+        var index = Int(round(withLocation.x / xFragment))
+        
+        
+        if index == 0 {
+            index = 1
+        }
+        
+        if index == snappingPositionsWithOffset.count {
+            index -= 1
+        }
+        
+        popoverPosition = snappingPositionsWithOffset[index - 1]
+        currentIndicatroLineLayer(currentOffsets(popoverPosition.x))
+        currentIndicatorPointLayers(currentOffsets(popoverPosition.x))
+        
+        delegate?.exmapleInteractiveView(self, didChangeSelectedIndex: index - 1)
+        
+        statisticPopover.alpha = 1
+        statisticPopover.showWithAnimation()
+        
+    }
+    
+    override func panBegan(location: CGPoint, _ velocity: CGPoint, _ currentOffsets: [CGPoint]) {
+        
+        if popoverPosition == CGPointZero { return }
+        
+        if abs(location.x - popoverPosition.x) < 30 {
+            canResponedToGesture = true
+        }else {
+            canResponedToGesture = false
+        }
 
     }
     
-    override func panChanged(location: CGPoint, _ currentOffsets: [CGPoint]) {
+    override func panChanged(location: CGPoint, _ velocity: CGPoint, _ currentOffsets: [CGPoint]) {
+        guard canResponedToGesture else { return }
+        
         currentIndicatroLineLayer(currentOffsets)
         currentIndicatorPointLayers(currentOffsets)
         
+        if abs(velocity.x) > 500 {
+            statisticPopover.transform = CGAffineTransformMakeScale(0.1, 0.1)
+            statisticPopover.alpha = 0
+            return
+        }
         
-        guard canResponedToGesture else { return }
         let index = Int(round(location.x / xFragment))
-//        let decimal = location.x / xFragment - CGFloat(index)
-        
-//        if decimal > 0.3 && decimal < 0.7 { return }
-        
-//        if decimal > 0.7 {
-//            index += 1
-//        }
-        
-        
         
         guard index != 0 else { return }
         guard index != snappingPositionsWithOffset.count else { return }
         
         popoverPosition = snappingPositionsWithOffset[index - 1]
         
+        delegate?.exmapleInteractiveView(self, didChangeSelectedIndex: index - 1)
+        
         let distance = abs(location.x - popoverPosition.x)
         
         if distance / xFragment > 0.4 {
-            canResponedToGesture = false
-            UIView.animateWithDuration(0.01, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: .CurveEaseIn, animations: {
-                self.statisticPopover.transform = CGAffineTransformMakeScale(0.1, 0.1)
-                self.statisticPopover.alpha = 0
-            }) { finished in
-//                self.statisticPopover.removeFromSuperview()
-                self.statisticPopover.transform = CGAffineTransformIdentity
-                self.statisticPopover.alpha = 0
-                self.canResponedToGesture = true
-            }
-            
+            self.statisticPopover.transform = CGAffineTransformMakeScale(0.1, 0.1)
+            self.statisticPopover.alpha = 0
             return
         }
         
@@ -102,35 +117,44 @@ class ExampleInteractiveView: OMChartInteractiveView {
         statisticPopover.showWithInterativeParameter(delta)
     }
     
-    override func panEnded(location: CGPoint, _ currentOffsets: [CGPoint]) {
+    override func panEnded(location: CGPoint, _ velocity: CGPoint, _ currentOffsets: [CGPoint]) {
+        
         guard canResponedToGesture else { return }
+        
+        if displayLink != nil {
+            displayLink?.invalidate()
+            displayLink = nil
+        }
+        
         displayLink = CADisplayLink(target: self, selector: #selector(ExampleInteractiveView.drawNewIndicator(_: )))
         displayLink?.addToRunLoop(NSRunLoop.currentRunLoop(), forMode: NSDefaultRunLoopMode)
         addedX = 0
         remainingDistance = 0
         currentXOffset = 0
-        displayLinkCount = 12
         
         
-        let index = Int(round(location.x / xFragment))
+        var index = Int(round(location.x / xFragment))
         
-        guard index != 0 else { return }
-        guard index != snappingPositionsWithOffset.count else { return }
+        
+        if index == 0 {
+            index = 1
+        }
+        
+        if index == snappingPositionsWithOffset.count {
+            index -= 1
+        }
         
         popoverPosition = snappingPositionsWithOffset[index - 1]
         remainingDistance = location.x - popoverPosition.x
-        addedX = remainingDistance / 12
+        addedX = remainingDistance / 15
         currentXOffset = location.x
         
+        delegate?.exmapleInteractiveView(self, didChangeSelectedIndex: index - 1)
+
+        
         if statisticPopover.alpha != 0 {
-            canResponedToGesture = false
-            UIView.animateWithDuration(0.01, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: .CurveEaseInOut, animations: {
-                self.statisticPopover.transform = CGAffineTransformIdentity
-                self.statisticPopover.alpha = 1
-            }) { finished in
-                self.canResponedToGesture = true
-            }
-            
+            self.statisticPopover.transform = CGAffineTransformIdentity
+            self.statisticPopover.alpha = 1
             return
         }
         
@@ -145,13 +169,22 @@ class ExampleInteractiveView: OMChartInteractiveView {
         
         currentIndicatroLineLayer(currentOffsets(currentXOffset))
         currentIndicatorPointLayers(currentOffsets(currentXOffset))
-        currentXOffset -= addedX
-        displayLinkCount -= 1
         
-        if displayLinkCount == 0 {
+        if remainingDistance == 0.1 {
             displayLink?.invalidate()
             displayLink = nil
+            return
         }
+        
+        if abs(remainingDistance) <= abs(addedX) {
+            remainingDistance = 0.1
+            currentXOffset = popoverPosition.x
+            
+        }else {
+            remainingDistance -= addedX
+            currentXOffset -= addedX
+        }
+        
     }
     
     

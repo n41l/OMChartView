@@ -10,6 +10,7 @@ import UIKit
 
 public class OMChartInteractiveView: UIView {
     var panGestrue: UIPanGestureRecognizer?
+    var tapGestrue: UITapGestureRecognizer?
     var chartLayers: [OMChartLayer] = []
     var rectInset: UIEdgeInsets = UIEdgeInsetsZero
     public lazy var snappingPositions: [CGPoint] = {
@@ -17,19 +18,6 @@ public class OMChartInteractiveView: UIView {
         return Array(self.chartLayers.first!.path!.flipPointsPosition.map { (point) -> CGPoint in
             return self.currentOffsets(point.x).first!
         }.dropFirst())
-//            .reduce([CGPoint]()) { (initial, points) -> [CGPoint] in
-//            if initial.count == 0 {
-//                return points
-//            }else {
-//                return (0..<initial.count).map { (index) -> CGPoint in
-//                    if initial[index].y < points[index].y {
-//                        return points[index]
-//                    }else {
-//                        return initial[index]
-//                    }
-//                }
-//            }
-//        }
     }()
     
     public lazy var xFragment: CGFloat = {
@@ -42,6 +30,8 @@ public class OMChartInteractiveView: UIView {
             if isInteractive {
                 panGestrue = UIPanGestureRecognizer(target: self, action: #selector(OMChartInteractiveView.handlePan(_:)))
                 self.addGestureRecognizer(panGestrue!)
+                tapGestrue = UITapGestureRecognizer(target: self, action: #selector(OMChartInteractiveView.handleTap(_:)))
+                self.addGestureRecognizer(tapGestrue!)
             }
         }
     }
@@ -77,16 +67,20 @@ public class OMChartInteractiveView: UIView {
         switch sender.state {
         case .Began:
             let location = sender.locationInView(self)
-            panBegan(location, currentOffsets(min(max(location.x - rectInset.left, 0), rRect.width - 1)))
+            panBegan(location, sender.velocityInView(self), currentOffsets(min(max(location.x - rectInset.left, 0), rRect.width - 1)))
         case .Changed:
             let location = sender.locationInView(self)
-            panChanged(location, currentOffsets(min(max(location.x - rectInset.left, 0), rRect.width - 1)))
+            panChanged(location, sender.velocityInView(self), currentOffsets(min(max(location.x - rectInset.left, 0), rRect.width - 1)))
         case .Ended:
             let location = sender.locationInView(self)
-            panEnded(location, currentOffsets(min(max(location.x - rectInset.left, 0), rRect.width - 1)))
+            panEnded(location, sender.velocityInView(self), currentOffsets(min(max(location.x - rectInset.left, 0), rRect.width - 1)))
         default:
             break
         }
+    }
+    
+    func handleTap(sender: UITapGestureRecognizer) {
+        tap(sender.locationInView(self), sender.numberOfTouches())
     }
     
     public func currentOffsets(x: CGFloat) -> [CGPoint] {
@@ -99,15 +93,19 @@ public class OMChartInteractiveView: UIView {
             }.sort { $0.y < $1.y }
     }
     
-    public func panBegan(location: CGPoint, _ currentOffsets: [CGPoint]) {
+    public func tap(withLocation: CGPoint, _ count: Int) {
         
     }
     
-    public func panChanged(location: CGPoint, _ currentOffsets: [CGPoint]) {
+    public func panBegan(location: CGPoint, _ velocity: CGPoint, _ currentOffsets: [CGPoint]) {
         
     }
     
-    public func panEnded(location: CGPoint, _ currentOffsets: [CGPoint]) {
+    public func panChanged(location: CGPoint, _ velocity: CGPoint, _ currentOffsets: [CGPoint]) {
+        
+    }
+    
+    public func panEnded(location: CGPoint, _ velocity: CGPoint, _ currentOffsets: [CGPoint]) {
         
     }
     

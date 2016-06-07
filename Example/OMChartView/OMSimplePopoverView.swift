@@ -66,6 +66,11 @@ class OMSimplePopoverView: UIView {
         return self
     }
     
+    func setup(atPosition: CGPoint) -> OMSimplePopoverView {
+        setup(_contentView, _fromView, atPosition)
+        return self
+    }
+    
     func showWithAnimation() {
         guard setupFinished else { fatalError("setup your popover first") }
         
