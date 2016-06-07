@@ -37,16 +37,11 @@ public class OMChartInteractiveView: UIView {
     }
     
     public override init(frame: CGRect) {
-//        interactiveRect = CGRect(origin: CGPointZero, size: frame.size)
         super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
-        
-        
-        
     }
     
     public required init?(coder aDecoder: NSCoder) {
-//        interactiveRect = CGRectZero
         super.init(coder: aDecoder)
         self.backgroundColor = UIColor.clearColor()
     }

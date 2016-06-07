@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A3F93321D015A290048F7B5 /* ExampleInteractiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3F93311D015A290048F7B5 /* ExampleInteractiveView.swift */; };
 		1ABCF7001D06B52500D52819 /* ExampleIntercativeViewDelegateCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABCF6FF1D06B52500D52819 /* ExampleIntercativeViewDelegateCenter.swift */; };
+		1ABCF7021D06B9CF00D52819 /* StatisticWeekXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABCF7011D06B9CF00D52819 /* StatisticWeekXView.swift */; };
 		1ADCE8F71D03D0950027FDB8 /* OMSimplePopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADCE8F61D03D0950027FDB8 /* OMSimplePopoverView.swift */; };
 		1AE9E4F51D054C5A003DF8EE /* StatisticContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE9E4F41D054C5A003DF8EE /* StatisticContentView.swift */; };
 		1AE9E4F81D0576F1003DF8EE /* OMKeyFrameAnimation.Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE9E4F61D0576F1003DF8EE /* OMKeyFrameAnimation.Extension.swift */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		1A3F93311D015A290048F7B5 /* ExampleInteractiveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleInteractiveView.swift; sourceTree = "<group>"; };
 		1ABCF6FF1D06B52500D52819 /* ExampleIntercativeViewDelegateCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleIntercativeViewDelegateCenter.swift; sourceTree = "<group>"; };
+		1ABCF7011D06B9CF00D52819 /* StatisticWeekXView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticWeekXView.swift; sourceTree = "<group>"; };
 		1ADCE8F61D03D0950027FDB8 /* OMSimplePopoverView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMSimplePopoverView.swift; sourceTree = "<group>"; };
 		1AE9E4F41D054C5A003DF8EE /* StatisticContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticContentView.swift; sourceTree = "<group>"; };
 		1AE9E4F61D0576F1003DF8EE /* OMKeyFrameAnimation.Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OMKeyFrameAnimation.Extension.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				1ABCF6FF1D06B52500D52819 /* ExampleIntercativeViewDelegateCenter.swift */,
 				1ADCE8F61D03D0950027FDB8 /* OMSimplePopoverView.swift */,
 				1AE9E4F41D054C5A003DF8EE /* StatisticContentView.swift */,
+				1ABCF7011D06B9CF00D52819 /* StatisticWeekXView.swift */,
 				1AE9E4F61D0576F1003DF8EE /* OMKeyFrameAnimation.Extension.swift */,
 				1AE9E4F71D0576F1003DF8EE /* OMKeyFrameAnimation.Function.swift */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
@@ -385,6 +388,7 @@
 				1ADCE8F71D03D0950027FDB8 /* OMSimplePopoverView.swift in Sources */,
 				1ABCF7001D06B52500D52819 /* ExampleIntercativeViewDelegateCenter.swift in Sources */,
 				1AE9E4F81D0576F1003DF8EE /* OMKeyFrameAnimation.Extension.swift in Sources */,
+				1ABCF7021D06B9CF00D52819 /* StatisticWeekXView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

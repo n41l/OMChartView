@@ -45,6 +45,11 @@ class ExampleInteractiveView: OMChartInteractiveView {
         return UIImage(named: "statistic_indicator_point")
     }()
     
+    override func drawRect(rect: CGRect) {
+        super.drawRect(rect)
+        tap(snappingPositionsWithOffset[(snappingPositionsWithOffset.count - 1) / 2], 0)
+    }
+    
     override func tap(withLocation: CGPoint, _ count: Int) {
         
         if abs(withLocation.x - popoverPosition.x) < xFragment * 0.5 { return }

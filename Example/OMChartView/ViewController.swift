@@ -33,13 +33,21 @@ class ViewController: UIViewController {
         let chartView = OMChartView(frame: CGRect(x: 0, y: 40, width: self.view.bounds.width, height: 300)).appendChartLayers([line1, line2])
         gradientBGLayer.frame = chartView.bounds
         chartView.layer.addSublayer(gradientBGLayer)
+        
+        let xView = StatisticXView(frame: CGRect(x: 0, y: chartView.bounds.height - 40, width: chartView.bounds.width, height: 40), andTitles: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"])
+        delegates.append(xView)
+        
+
     
         chartView.rectInset = UIEdgeInsetsMake(140, 0, 40, 0)
         let interactiveView = ExampleInteractiveView(frame: chartView.bounds)
         interactiveView.delegate = delegates
         interactiveView.statisticPopover.setup(contentView, interactiveView, CGPointZero)
+        interactiveView.addSubview(xView)
         chartView.withInteractiveView(interactiveView)
         chartView.commit()
+        
+
         self.view.addSubview(chartView)
         
         
@@ -58,7 +66,7 @@ class ViewController: UIViewController {
     }
     
     func handlePan(sender: UIPanGestureRecognizer) {
-        let delta = sender.locationInView(self.view).x / self.view.bounds.width
+//        let delta = sender.locationInView(self.view).x / self.view.bounds.width
 //        interactivePopover.showWithInterativeParameter(delta)
     }
 

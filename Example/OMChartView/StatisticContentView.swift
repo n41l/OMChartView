@@ -30,7 +30,7 @@ class StatisticContentView: UIView {
     init(withAllGridsAndCharacters: [[CGFloat]]) {
         
         allGridsAndCharacters = withAllGridsAndCharacters
-        currentIndex = Int(allGridsAndCharacters.count / 2)
+        currentIndex = allGridsAndCharacters.count / 2
         
         
         gridCount.text = String(allGridsAndCharacters.first![currentIndex])
